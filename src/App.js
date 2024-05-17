@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+
+import { Home } from './views/Home';
+import { Categorias } from './views/Categorias';
+import { SobreNosotros } from './views/SobreNosotros';
+import { DefaultComponent } from './components/DefaultComponent';
+import {Ver} from "./views/Ver";
+import {BuscarContext} from "./components/BuscarContext";
+import './css/index.css';
+import './css/simple-line-icons.css';
+import {useState} from "react";
+
 
 function App() {
+  const [globalBuscar, setGlobalBuscar] = useState("");
+
+  let updateBuscar = (value) => {
+    setGlobalBuscar(value);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BuscarContext.Provider value={{ globalBuscar, updateBuscar }}>
+      <BrowserRouter>
+          <Routes>
+            <Route exact path="/" element={ <Home/> } />
+            <Route exact path="/categoria/:categoria" element={ <Categorias/> } />
+            <Route exact path="/sobre-nosotros" element={ <SobreNosotros/> } />
+            <Route exact path="/ver/:id" element={ <Ver/> } />
+            <Route exact path="*" element={ <DefaultComponent/> } />
+          </Routes>
+      </BrowserRouter>
+    </BuscarContext.Provider>
   );
 }
 
